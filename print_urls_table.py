@@ -33,6 +33,8 @@ def search_for_urls_ddgh(model):
     '''Use duckduckgo (uncensored) frontpage
     '''
     urls = duckduckhtml.query(u'{0}+site:.cl'.format(model))
+    time.sleep(1)
+    urls += duckduckhtml.query(u'{0}+site:falabella.com'.format(model))
     return urls
 
 def search_for_urls_ddg(model):
