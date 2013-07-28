@@ -1,3 +1,6 @@
 Scraping of displaylag.com and search on specific domains for availability of lagless monitors in certain country.
 
 Escaneo de contenido de displaylag.com para búsqueda posterior en dominios específicos para encontrar disponibilidad de monitores sin lag en un país
+
+
+python print_urls_table.py > my_html_table.html
