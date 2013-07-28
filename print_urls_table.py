@@ -98,9 +98,6 @@ if __name__ == '__main__':
             all_screens))
     screens = selected_scrns
     #from pudb import set_trace;set_trace()
-    #try only one model
-    screens = [s for s in selected_scrns \
-                if s.model == 'UN46F5000']
 
 
     #cabeceras
