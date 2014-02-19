@@ -86,7 +86,6 @@ def fill_screen_urls(screen,engine='duckduckgohtml'):
 
 if __name__ == '__main__':
 
-
     f = StringIO()
     f.write(u'<table border="1">\n')
     #Obtener pantallas
@@ -106,7 +105,16 @@ if __name__ == '__main__':
         f.write(u'<th>{0} {1} ({2}\',{3}ms)</th>\n'.format(\
                 s.brand, s.model, s.size, s.delay))
     f.write(u'</tr>')
-    
+    #evitar buscar dos veces
+    model_set = set()
+    to_del = []
+    for s in screens:
+        if s.model not in model_set:
+            model_set.add(s.model)
+        else:
+            to_del.append(s)
+    for td in to_del:
+        screens.remove(td)
     #obtener urls
     for i_s,s in enumerate(screens):
         sys.stderr.write(u'Looking for {0} ({1}/{2})\n'.format(\
