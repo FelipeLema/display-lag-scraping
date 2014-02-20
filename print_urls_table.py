@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 #system imports
-import sys
-import re
-import urlparse
-from StringIO import StringIO
 import itertools as it
-import urlparse
+import pickle
+import re
+from StringIO import StringIO
+import sys
 import time
+import urlparse
 
 #custom imports
 import duckduckhtml
@@ -20,12 +20,11 @@ class Screen(object):
         #assert(g, print u'No number in delay ("{0}")'.format(delay))
         delay = g.group(0)
         size = size.strip('\'"')
-        self.brand = brand
-        #from pudb import set_trace;set_trace()
+        self.brand = unicode(brand)
         self.size  = float(size)
-        self.model = model
-        self.res   = resolution
-        self.type  = screen_type
+        self.model = unicode(model)
+        self.res   = unicode(resolution)
+        self.type  = unicode(screen_type)
         self.delay = float(delay)
         self.urls  = []
 
@@ -63,8 +62,8 @@ def print_table(t,f):
            base_url = base_url.split(':')[0]
            f.write(u'<td>\n')
            f.write(u'<a href="{0}" target="_blank" >{1}</a>\n'.format(\
-                    url,\
-                    base_url))
+                    unicode(url),\
+                    unicode(base_url) ))
            f.write(u'</td>\n')
        f.write(u'</tr>\n')
    f.write(u'</table>\n')
@@ -137,5 +136,9 @@ if __name__ == '__main__':
     #imprimir urls
     print_table(list(it.izip(*[s.urls for s in screens])),f)
 
-    print f.getvalue()
+    try:
+        print f.getvalue().encode( 'utf-8' )
+    except Exception,e:
+        pickle.dump(f, open("f_io.pickle","wb"))
+        raise e
 
