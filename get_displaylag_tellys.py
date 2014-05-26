@@ -2,26 +2,41 @@
 
 See http://forums.shoryuken.com/discussion/comment/8676004#Comment_8676004
 '''
-from BeautifulSoup import BeautifulSoup
 import urllib
 import re
+from selenium import webdriver
+from selenium.webdriver.support.ui import Select
+fields = ['brand',   'size',    'model',   'resolution','screen_type','input_lag']
+tags   = ['column-3','column-2','column-4','column-5',  'column-8',   'column-10']
 
+def selenium_get_dlcom():
+    global fields, tags
+
+    driver = webdriver.Firefox()
+    driver.implicitly_wait(30)
+    base_url = "http://www.displaylag.com"
+    verificationErrors = []
+    accept_next_alert = True
+
+    driver = driver
+    driver.get(base_url + "/display-database/")
+    Select(driver.find_element_by_name("tablepress-1_length")).select_by_visible_text("All")
+
+    scr_d=dict()
+    for f,t in zip(fields,tags):
+        print('fetching {0}'.format(f))
+        scr_d[f] = [i.text for i in \
+                driver.find_elements_by_class_name(t)][1:]
+        '''
+        scr_d[f] = [i.text for i in \
+                driver.find_elements_by_xpath("//td[@class='{0}']".format(t))][1:]
+        '''
+    driver.quit()
+    return scr_d
+ 
 def get_displaylag_screens(max_screens=30):
-    site = urllib.urlopen('http://www.displaylag.com/display-database/')
-    data = site.read()
-    parsed = BeautifulSoup(data)
-    del data
-    #build re
-    fields = ['brand','size','model','resolution','screen_type','input_lag']
-
-    by_fields={}
-    for f in fields:
-        le_re = r'{0}-field'.format(\
-            f)
-        markups = parsed.findAll('td', {'class': le_re})
-        #from pudb import set_trace; set_trace() 
-        by_fields[f]=[m.text.replace('&quot;','\'') for m in markups]
-
+    global fields
+    by_fields=selenium_get_dlcom()
     l=-1
     for f in fields:
         if l<0:
