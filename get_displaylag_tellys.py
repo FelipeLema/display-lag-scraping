@@ -43,7 +43,7 @@ def get_displaylag_screens(max_screens=30):
             l=len(by_fields[f])
         assert l==len(by_fields[f]),'{0} != {1}'.format(l,len(by_fields[f]))
     out=[]
-    for i in xrange(l):
+    for i in range(l):
         out.append(dict([ \
                 (f,by_fields[f][i]) for f in fields]))
     return out
@@ -76,7 +76,7 @@ def get_squidoo_monitors():
             ]
     l = [i.split() for i in l]
     out=[]
-    for single in xrange(l):
+    for single in range(l):
         if len(single) == 0:
             continue
         out.append(dict([\
@@ -86,4 +86,4 @@ def get_squidoo_monitors():
 
 if __name__ == '__main__':
     for i in get_displaylag_screens()[:12]:
-        print i
+        print(i)
