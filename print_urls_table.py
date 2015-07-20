@@ -10,6 +10,7 @@ import urllib
 
 #custom imports
 import duckduckhtml
+import pws_google
 from get_displaylag_tellys import get_displaylag_screens
 from memoize_function_deco import file_memoized
 
@@ -18,7 +19,6 @@ class Screen(object):
         delay=input_lag
         del input_lag
         g = re.search(r'[0-9]+',delay)
-        #assert(g, print u'No number in delay ("{0}")'.format(delay))
         delay = g.group(0)
         size = size.strip('\'"')
         self.brand = brand
@@ -29,26 +29,14 @@ class Screen(object):
         self.delay = float(delay)
         self.urls  = []
 
-def search_for_urls_ddgh(model):
-    '''Use duckduckgo (uncensored) frontpage
+@file_memoized()
+def search_for_urls_pwsg(model):
+    '''Use py-web-search
     '''
-    urls = duckduckhtml.query(u'{0}+site:.cl'.format(model))
-    urls += duckduckhtml.query(u'{0}+site:falabella.com'.format(model))
+    urls = pws_google.query('{0} site:.cl'.format(model))
+    urls += pws_google.query('{0} site:falabella.com'.format(model))
     return urls
 
-def search_for_urls_ddg(model):
-    ''' Search using duckduckgo official (limited api)
-    '''
-    sites=['.cl','falabella.com']
-    out=[]
-    for site in sites:
-        r = duckduckgo.query(u'{1}+site:{0}'.format(site,model),useragent='FelipeLuna')
-        #avoid duckduckgo anti-spam system
-        time.sleep(20)
-        if r.type != u'answer':
-            continue
-        out += [r_i.url for r_i in r]
-    return out
 
 def print_table(t,f):
    for line in t:
@@ -66,12 +54,11 @@ def print_table(t,f):
            f.write(u'</td>\n')
        f.write(u'</tr>\n')
    f.write(u'</table>\n')
-@file_memoized
-def fill_screen_urls(screen,engine='duckduckgohtml'):
+
+def fill_screen_urls(screen,engine='py-web-search'):
     model = screen.model
     try:
-        f={'duckduckgo':search_for_urls_ddg,\
-           'duckduckgohtml':search_for_urls_ddgh
+        f={'py-web-search':search_for_urls_pwsg
                 }[engine]
     except KeyError:
         raise NotImplementedError(u'No such engine "{0}"'.format(engine))
@@ -81,14 +68,16 @@ def fill_screen_urls(screen,engine='duckduckgohtml'):
     screen.urls = r
     return r
 
+@file_memoized()
+def memo_get_displaylag_screens():
+    return get_displaylag_screens()
 
 if __name__ == '__main__':
 
     f = StringIO()
     f.write(u'<table border="1">\n')
     #Obtener pantallas
-    #screens = [Screen(u'Samsung',"32''",u'UN32EH4003','720p','LED','19ms')]
-    screens_kargs = get_displaylag_screens()
+    screens_kargs = memo_get_displaylag_screens()
     all_screens = [Screen(**karg) for karg in screens_kargs]
     selected_scrns = list(filter(\
             lambda x: x.delay <= 30.0,\
@@ -103,7 +92,7 @@ if __name__ == '__main__':
         f.write(u'<th>{0} {1} ({2}\',{3}ms)</th>\n'.format(\
                 s.brand, s.model, s.size, s.delay))
     f.write(u'</tr>')
-    #evitar buscar dos veces
+    #evitar buscar dos veces (comparar usando modelo)
     model_set = set()
     to_del = []
     for s in screens:
@@ -120,9 +109,7 @@ if __name__ == '__main__':
                 i_s+1,\
                 len(screens)))
         sys.stderr.flush()
-        #s.urls = search_for_urls(s.model)
         fill_screen_urls(s)
-        #print u'{0} para {1}'.format(len(s.urls),s.model)
         sys.stdout.flush()
         print('')
         
@@ -136,7 +123,7 @@ if __name__ == '__main__':
         s.urls+=list(it.repeat('',max_l-len(s.urls))) 
 
     #imprimir urls
-    print_table(list(it.izip(*[s.urls for s in screens])),f)
+    print_table(list(zip(*[s.urls for s in screens])),f)
 
     try:
         print(f.getvalue().encode( 'utf-8' ))
