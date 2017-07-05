@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 ''' Buscar en http://www.solotodo.com/
 '''
-from html.parser import HTMLParser
-import urllib.request
 from collections import defaultdict
+from html.parser import HTMLParser
+from math import ceil
+import urllib.request
+import datetime
+import time
 import warnings
 
 
@@ -34,14 +37,14 @@ class SolotodoParser(HTMLParser):
         pass
 
 
-def buscar_solotodo(consulta=None, archHtml=None):
+def buscar_solotodo(consulta=None, archHtml=None,
+                    descanso=datetime.timedelta(seconds=30)):
     '''Buscar en http://www.solotodo.com/
     '''
     if archHtml is None:
         assert(consulta is not None)
         fileName, headers = urllib.request.urlretrieve(
             "http://www.solotodo.com/search/?keywords={}".format(consulta))
-        print(archHtml)
     else:
         assert(consulta is None)
         fileName = archHtml
@@ -57,4 +60,8 @@ def buscar_solotodo(consulta=None, archHtml=None):
             warnings.warn("Sin resultados, revisa {}".format(nombreRegistro))
     urlsCompletas = list(map(lambda url: "http://www.solotodo.com"+url,
                              parser.resultados))
+
+    # Al parececer, solotodo no deja buscar de corrido
+    time.sleep(ceil(descanso.total_seconds()))
+    
     return urlsCompletas
