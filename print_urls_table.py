@@ -5,20 +5,19 @@ import pickle
 import re
 from io import StringIO
 import sys
-import time
-import urllib 
 
-#custom imports
-import duckduckhtml
+# custom imports
 import pws_google
 from get_displaylag_tellys import get_displaylag_screens
 from memoize_function_deco import file_memoized
+
 
 class Screen(object):
     def __init__(self,brand,size,model,resolution,screen_type,input_lag):
         delay=input_lag
         del input_lag
         g = re.search(r'[0-9]+',delay)
+        assert g is not None, "No delay in \"{0}\"".format(delay)
         delay = g.group(0)
         size = size.strip('\'"')
         self.brand = brand
@@ -58,10 +57,11 @@ def print_table(t,f):
 def fill_screen_urls(screen,engine='py-web-search'):
     model = screen.model
     try:
-        f={'py-web-search':search_for_urls_pwsg
+        f={'py-web-search':search_for_urls_pwsg,
+          'solotodo':search_for_urls_pwsg, 
                 }[engine]
     except KeyError:
-        raise NotImplementedError(u'No such engine "{0}"'.format(engine))
+        raise NotImplementedError('no conozco el motor "{0}"'.format(engine))
     r = f(model)
     for s in r:
         assert isinstance(s,str)
@@ -83,7 +83,6 @@ if __name__ == '__main__':
             lambda x: x.delay <= 30.0,\
             all_screens))
     screens = selected_scrns
-    #from pudb import set_trace;set_trace()
 
 
     #cabeceras
@@ -104,7 +103,7 @@ if __name__ == '__main__':
         screens.remove(td)
     #obtener urls
     for i_s,s in enumerate(screens):
-        sys.stderr.write(u'Looking for {0} ({1}/{2})\n'.format(\
+        sys.stderr.write('Buscando {0} ({1}/{2})\n'.format(\
                 s.model,\
                 i_s+1,\
                 len(screens)))
