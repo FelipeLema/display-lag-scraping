@@ -1,2 +1,6 @@
+#!/usr/bin/zsh -f
+if [[ -d .memocache ]]; then
+    rm -rf .memocache
+fi
 # https://stackoverflow.com/a/11536794/3637404
 python -m tests.todas
