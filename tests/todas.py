@@ -20,7 +20,15 @@ class PruebaSolotodo(unittest.TestCase):
     def test_trae(self):
         "Va a buscar algo (lo que sea)"
         resultados = cached_solotodo("usb")
-        self.assertTrue(resultados, "Trae resultados")
+        self.assertTrue(resultados)
+
+
+class PruebaMonitorSolotodo(unittest.TestCase):
+    def test_trae(self):
+        "Va a buscar algo (monitor de verdad)"
+        resultados = cached_solotodo("MX279H")
+        self.assertTrue(resultados)
+
 
 
 class PruebaParserDisplayLag(unittest.TestCase):
