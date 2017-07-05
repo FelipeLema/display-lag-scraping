@@ -58,9 +58,3 @@ def buscar_solotodo(consulta=None, archHtml=None):
     urlsCompletas = list(map(lambda url: "http://www.solotodo.com"+url,
                              parser.resultados))
     return urlsCompletas
-
-
-if __name__ == '__main__':
-    print(buscar_solotodo(archHtml="./index.html?keywords=usb"))
-    # print(buscar_solotodo(consulta="usb"))
-
