@@ -38,7 +38,8 @@ class SolotodoParser(HTMLParser):
 
 
 def buscar_solotodo(consulta=None, archHtml=None,
-                    descanso=datetime.timedelta(seconds=30)):
+                    descanso=datetime.timedelta(seconds=30),
+                    avisarVacíos=False):
     '''Buscar en http://www.solotodo.com/
     '''
     if archHtml is None:
@@ -53,8 +54,9 @@ def buscar_solotodo(consulta=None, archHtml=None,
     with open(fileName) as htmlFile:
         htmlStr = '\n'.join(htmlFile.readlines())
         parser.feed(htmlStr)
-        if not parser.resultados:
-            nombreRegistro = "./última_consulta.html"
+        if not parser.resultados and avisarVacíos:
+            nombreRegistro = "./última_consulta-{0}.html".format(
+                datetime.datetime.now().isoformat())
             with open(nombreRegistro, "w") as registro:
                 registro.write(htmlStr)
             warnings.warn("Sin resultados, revisa {}".format(nombreRegistro))
