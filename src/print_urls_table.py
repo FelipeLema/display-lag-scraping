@@ -8,10 +8,10 @@ import urllib
 import sys
 
 # custom imports
-import pws_google
-from get_displaylag_tellys import get_displaylag_screens
-from memoize_function_deco import file_memoized
-from buscar_solotodo import buscar_solotodo
+import src.pws_google as pws_google
+from src.get_displaylag_tellys import get_displaylag_screens
+from src.memoize_function_deco import file_memoized
+from src.buscar_solotodo import buscar_solotodo
 
 
 class Screen(object):
@@ -40,21 +40,13 @@ def search_for_urls_pwsg(model):
     return urls
 
 
-def print_table(t, f):
-    for line in t:
-        # en una línea hay una url por modelo
-        f.write(u'<tr>\n')
-        for url in line:
-            parsed_url = urllib.parse.urlparse(url)
-            base_url = '.'.join(parsed_url.netloc.split('.')[-2:])
-            # remover puerto
-            base_url = base_url.split(':')[0]
-            f.write('<td>\n')
-            f.write('<a href="{0}" target="_blank" >{1}</a>\n'.format(
-                url, base_url))
-            f.write(u'</td>\n')
-        f.write(u'</tr>\n')
-    f.write(u'</table>\n')
+def imprimirTabla(listaDeUrls, f):
+    comoTabla = it.zip_longest(*listaDeUrls, fillvalue='')
+    # https://stackoverflow.com/a/6473724/3637404
+    transpuesta = map(list, zip(*comoTabla))
+    for fila in transpuesta:
+        filaFormateada = '|'.join(list(fila))
+        f.write('|{0}\n'.format(filaFormateada))
 
 
 def fill_screen_urls(screen, engine='solotodo'):
@@ -80,7 +72,7 @@ def memo_get_displaylag_screens():
 if __name__ == '__main__':
 
     f = StringIO()
-    f.write(u'<table border="1">\n')
+    f.write('|========\n')
     # Obtener modelos de pantallas
     screens_kargs = memo_get_displaylag_screens()
     all_screens = [Screen(**karg) for karg in screens_kargs]
@@ -89,11 +81,12 @@ if __name__ == '__main__':
             all_screens))
     screens = selected_scrns
     # cabeceras
-    f.write(u'<tr>\n')
-    for s in screens:
-        f.write(u'<th>{0} {1} ({2}\',{3}ms)</th>\n'.format(\
-                s.brand, s.model, s.size, s.delay))
-    f.write(u'</tr>')
+    cabeceras = '|'.join(
+        ['{0} {1} ({2}\',{3}ms)'.format(
+            s.brand, s.model, s.size, s.delay)
+            for s in screens])
+    f.write('|{0}\n'.format(cabeceras))
+
     # evitar buscar dos veces (comparar usando modelo)
     model_set = set()
     to_del = []
@@ -104,7 +97,7 @@ if __name__ == '__main__':
             to_del.append(s)
     for td in to_del:
         screens.remove(td)
-    # obtener urls
+    # obtener urls para cada modelo
     for i_s,s in enumerate(screens):
         sys.stderr.write('Buscando {0} ({1}/{2})…'.format(
                 s.model,
@@ -115,7 +108,6 @@ if __name__ == '__main__':
         sys.stderr.write(' obtuve {0} resultados\n'.format(
             len(s.urls)))
         sys.stdout.flush()
-        print('')
     # rellenar
     max_l = -1
     for s in screens:
@@ -124,10 +116,12 @@ if __name__ == '__main__':
         s.urls += list(it.repeat('', max_l-len(s.urls)))
 
     # imprimir urls
-    print_table(list(zip(*[s.urls for s in screens])), f)
+    imprimirTabla([s.urls for s in screens], f)
 
+    # cerrar tabla
+    f.write('|========\n')
     try:
-        print(f.getvalue().encode('utf-8'))
+        sys.stdout.write(f.getvalue())
     except Exception as e:
         pickle.dump(f, open("f_io.pickle", "wb"))
         raise e
