@@ -42,7 +42,6 @@ class file_memoized(object):
                 except FileExistsError:
                     pass
                 with open(self.getCacheFile(args), mode='wb') as outFile:
-                    print("saved as {0}".format(outFile.name))
                     pickle.dump(r, outFile)
                     return r
         return sub_call
