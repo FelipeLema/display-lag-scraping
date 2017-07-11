@@ -1,6 +1,26 @@
+Short description / Descripción corta
+=====================================
+
 Scraping of displaylag.com and search on specific domains for availability of lagless monitors in certain country.
 
 Escaneo de contenido de displaylag.com para búsqueda posterior en dominios específicos para encontrar disponibilidad de monitores sin lag en un país
 
+----
+python print_urls_table.py > my_html_table.adoc
+----
 
-python print_urls_table.py > my_html_table.html
+Monitores disponibles en Chile
+------------------------------
+
+
+Actualmente, el código lo mantengo para que busque la selección de monitores en solotodo (Chile):
+
+|========
+|ASUS MX279H (27.0',9.0ms)|http://www.solotodo.com/products/13655-asus-mx279h/
+|LG 25UM58-P (25.0',9.0ms)|http://www.solotodo.com/products/24319-lg-25um58/
+|LG 24MP48HQ-P (24.0',9.0ms)|http://www.solotodo.com/products/35167-lg-24mp48hq/
+|ASUS VE278H (27.0',10.0ms)|http://www.solotodo.com/products/15182-asus-ve278h/
+|ASUS VP228H (22.0',10.0ms)|http://www.solotodo.com/products/26883-asus-vp228h/
+|ViewSonic VX2457 (24.0',10.0ms)|http://www.solotodo.com/products/25669-viewsonic-vx2457-mhd/
+|ViewSonic XG2401 (24.0',10.0ms)|http://www.solotodo.com/products/25666-viewsonic-xg2401/
+|========

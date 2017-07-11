@@ -4,7 +4,6 @@ import itertools as it
 import pickle
 import re
 from io import StringIO
-import urllib
 import sys
 
 # custom imports
@@ -65,6 +64,11 @@ def fill_screen_urls(screen, engine='solotodo'):
 
 
 @file_memoized()
+def m_busca_datos_pantallas(pantalla):
+    fill_screen_urls(pantalla)
+
+
+@file_memoized()
 def memo_get_displaylag_screens():
     return get_displaylag_screens()
 
@@ -72,7 +76,6 @@ def memo_get_displaylag_screens():
 if __name__ == '__main__':
 
     f = StringIO()
-    f.write('|========\n')
     # Obtener modelos de pantallas
     screens_kargs = memo_get_displaylag_screens()
     all_screens = [Screen(**karg) for karg in screens_kargs]
@@ -80,12 +83,6 @@ if __name__ == '__main__':
             lambda x: x.delay <= 30.0,
             all_screens))
     screens = selected_scrns
-    # cabeceras
-    cabeceras = '|'.join(
-        ['{0} {1} ({2}\',{3}ms)'.format(
-            s.brand, s.model, s.size, s.delay)
-            for s in screens])
-    f.write('|{0}\n'.format(cabeceras))
 
     # evitar buscar dos veces (comparar usando modelo)
     model_set = set()
@@ -104,7 +101,7 @@ if __name__ == '__main__':
                 i_s+1,
                 len(screens)))
         sys.stderr.flush()
-        fill_screen_urls(s)
+        m_busca_datos_pantallas(s)
         sys.stderr.write(' obtuve {0} resultados\n'.format(
             len(s.urls)))
         sys.stdout.flush()
@@ -116,9 +113,12 @@ if __name__ == '__main__':
         s.urls += list(it.repeat('', max_l-len(s.urls)))
 
     # imprimir urls
-    imprimirTabla([s.urls for s in screens], f)
-
-    # cerrar tabla
+    f.write('|========\n')
+    cabeceras = ['{0} {1} ({2}\',{3}ms)'.format(
+        s.brand, s.model, s.size, s.delay)
+                 for s in screens]
+    filas = [ [c] + s.urls for c,s in zip(cabeceras, screens)]
+    imprimirTabla(filas, f)
     f.write('|========\n')
     try:
         sys.stdout.write(f.getvalue())
