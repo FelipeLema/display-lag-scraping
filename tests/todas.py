@@ -8,7 +8,7 @@ import unittest
 from src.buscar_solotodo import buscar_solotodo
 from src.get_displaylag_tellys import get_displaylag_screens
 from src.memoize_function_deco import file_memoized
-from src.print_urls_table import imprimirTabla
+from src.print_urls_table import imprimirTabla, memo_get_displaylag_screens, Screen
 
 
 @file_memoized()
@@ -65,7 +65,6 @@ class ImprimirTabla(unittest.TestCase):
 |1|2||
 |α|β|γ|δ
 ''')
-        print()
 
 
 class MemoCache(unittest.TestCase):
