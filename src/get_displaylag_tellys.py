@@ -139,7 +139,7 @@ def monitores_particulares():
         ['brand', 'size', 'model', 'resolution', 'screen_type', 'input_lag']
     l = [
         #                               ↓ No sé, en realidad
-        'Samsung 24 C27F398 1x1 monitor 4ms',
+        'Samsung 24 C27F398 1x1 monitor 11ms',
         'Samsung 27 LC24F390FHLX 1x1 monitor 4ms',
     ]
     return formatear(cabecera, l)

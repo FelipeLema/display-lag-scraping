@@ -25,5 +25,5 @@ Actualmente, el código lo mantengo para que busque la selección de monitores e
 |ViewSonic XG2401 (24.0',10.0ms)|http://www.solotodo.com/products/25666-viewsonic-xg2401/
 |LG VG278H (27.0',6.0ms)|http://www.solotodo.com/products/25849-asus-vg278hv/
 |Asus VG248QE (24.0',3.0ms)|http://www.solotodo.com/products/13660-asus-vg248qe/
-|Samsung LC24F390FHLX (27.0',4.0ms)|http://www.solotodo.com/products/25606-samsung-lc24f390fhlxzs/
+|Samsung LC24F390FHLX (27.0',11.0ms)|http://www.solotodo.com/products/25606-samsung-lc24f390fhlxzs/
 |========
