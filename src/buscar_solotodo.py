@@ -38,7 +38,7 @@ class SolotodoParser(HTMLParser):
 
 
 def buscar_solotodo(consulta=None, archHtml=None,
-                    descanso=datetime.timedelta(seconds=30),
+                    descanso=datetime.timedelta(seconds=60),
                     avisarVacíos=False):
     '''Buscar en http://www.solotodo.com/
     '''
@@ -60,8 +60,9 @@ def buscar_solotodo(consulta=None, archHtml=None,
             with open(nombreRegistro, "w") as registro:
                 registro.write(htmlStr)
             warnings.warn("Sin resultados, revisa {}".format(nombreRegistro))
+    resultadosÚnicos = list(set(parser.resultados))
     urlsCompletas = list(map(lambda url: "http://www.solotodo.com"+url,
-                             parser.resultados))
+                             resultadosÚnicos))
 
     # Al parececer, solotodo no deja buscar de corrido
     time.sleep(ceil(descanso.total_seconds()))

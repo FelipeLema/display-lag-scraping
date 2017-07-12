@@ -59,7 +59,7 @@ def html_parse_get(htmlStr):
     return parser.allTv
 
 
-def urllib_and_html_parse_get(htmlFilePath=None):
+def urllib_and_html_parse_get(max_screens=30, htmlFilePath=None):
     if htmlFilePath is None:
         fileName, headers = urllib.request.urlretrieve(
             "https://displaylag.com/display-database/")
@@ -78,11 +78,29 @@ def urllib_and_html_parse_get(htmlFilePath=None):
                     print(tv)
                     raise RuntimeError from e
             out.append(translatedFields)
-        return out
+        return out[:max_screens]
 
   
-def get_displaylag_screens(max_screens=30, htmlFilePath=None):
-    return urllib_and_html_parse_get(htmlFilePath)[:max_screens]
+def get_displaylag_screens():
+    return urllib_and_html_parse_get() + \
+        get_squidoo_monitors() + \
+        monitores_particulares()
+
+
+def formatear(cabecera, datos):
+    '''Toma una lista como cabecera, datos como
+lista de strings y retorna una tabla'''
+    # datos como lista
+    datos_l = [i.split() for i in datos]
+    for single in datos_l:
+        assert len(cabecera) == len(single)
+    salida = []
+    for single in datos_l:
+        if len(single) == 0:
+            continue
+        salida.append(dict([
+                (k, single[idx]) for idx, k in enumerate(cabecera)]))
+    return salida
 
 
 def get_squidoo_monitors():
@@ -90,7 +108,7 @@ def get_squidoo_monitors():
     I could've done a parser, but this is a one-time list.
     No use in making it re-runnable
     '''
-    data_header = \
+    cabecera = \
         ['brand', 'size', 'model', 'resolution', 'screen_type', 'input_lag']
     l = [
             'Asus 21.5 VE228H 1x1 monitor 7ms',
@@ -112,11 +130,16 @@ def get_squidoo_monitors():
             'BenQ 24 XL2420T 1x1 monitor 4.9ms',
             'Asus 24 VG248QE 1x1 monitor 3.1ms',
             ]
-    l = [i.split() for i in l]
-    out = []
-    for single in range(l):
-        if len(single) == 0:
-            continue
-        out.append(dict([
-                (k, single[idx]) for idx, k in enumerate(data_header)]))
-    return out
+    return formatear(cabecera, l)
+
+
+# see #1
+def monitores_particulares():
+    cabecera = \
+        ['brand', 'size', 'model', 'resolution', 'screen_type', 'input_lag']
+    l = [
+        #                               ↓ No sé, en realidad
+        'Samsung 24 C27F398 1x1 monitor 4ms',
+        'Samsung 27 LC24F390FHLX 1x1 monitor 4ms',
+    ]
+    return formatear(cabecera, l)
