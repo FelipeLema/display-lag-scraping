@@ -8,7 +8,7 @@ import unittest
 from src.buscar_solotodo import buscar_solotodo
 from src.get_displaylag_tellys import get_displaylag_screens
 from src.memoize_function_deco import file_memoized
-from src.print_urls_table import imprimirTabla, memo_get_displaylag_screens, Screen
+from src.print_urls_table import imprimirTabla
 
 
 @file_memoized()
@@ -30,8 +30,10 @@ class PruebaSolotodo(unittest.TestCase):
 
 class PruebaMonitorSolotodo(unittest.TestCase):
     def test_trae(self):
-        "Va a buscar algo (monitor de verdad)"
-        resultados = cached_solotodo("MX279H")
+        """Va a buscar algo (monitor de verdad)
+
+        Es necesario que la búsqueda entregue un ítem existente"""
+        resultados = cached_solotodo("V196HQL")
         self.assertTrue(resultados)
 
 
@@ -102,16 +104,15 @@ class MemoCache(unittest.TestCase):
             os.remove(file_memoized(lambda x: x).getCacheFile(entrada))
         except FileNotFoundError:
             pass
-         
+
         inicio = now()
-        r1 = capitalize(entrada)
         δ1 = now() - inicio
         assert δ1 > Δ(seconds=1)
 
         inicio = now()
-        r2 = capitalize(entrada)
         δ2 = now() - inicio
         assert δ2 < Δ(seconds=1)
+
 
 if __name__ == '__main__':
     unittest.main()

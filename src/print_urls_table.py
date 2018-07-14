@@ -7,7 +7,6 @@ from io import StringIO
 import sys
 
 # custom imports
-import src.pws_google as pws_google
 from src.get_displaylag_tellys import get_displaylag_screens
 from src.memoize_function_deco import file_memoized
 from src.buscar_solotodo import buscar_solotodo
@@ -22,21 +21,12 @@ class Screen(object):
         delay = g.group(0)
         size = size.strip('\'"')
         self.brand = brand
-        self.size  = float(size)
+        self.size = float(size)
         self.model = model
-        self.res   = resolution
-        self.type  = screen_type
+        self.res = resolution
+        self.type = screen_type
         self.delay = float(delay)
-        self.urls  = []
-
-
-@file_memoized()
-def search_for_urls_pwsg(model):
-    '''Use py-web-search
-    '''
-    urls = pws_google.query('{0} site:.cl'.format(model))
-    urls += pws_google.query('{0} site:falabella.com'.format(model))
-    return urls
+        self.urls = []
 
 
 def imprimirTabla(listaDeUrls, f):
@@ -51,8 +41,7 @@ def imprimirTabla(listaDeUrls, f):
 def fill_screen_urls(screen, engine='solotodo'):
     model = screen.model
     try:
-        f = {'py-web-search': search_for_urls_pwsg,
-             'solotodo': buscar_solotodo, 
+        f = {'solotodo': buscar_solotodo,
              }[engine]
     except KeyError:
         raise NotImplementedError('no conozco el motor "{0}"'.format(engine))
@@ -95,7 +84,7 @@ if __name__ == '__main__':
     for td in to_del:
         screens.remove(td)
     # obtener urls para cada modelo
-    for i_s,s in enumerate(screens):
+    for i_s, s in enumerate(screens):
         sys.stderr.write('Buscando {0} ({1}/{2})…'.format(
                 s.model,
                 i_s+1,
@@ -117,7 +106,7 @@ if __name__ == '__main__':
     cabeceras = ['{0} {1} ({2}\',{3}ms)'.format(
         s.brand, s.model, s.size, s.delay)
                  for s in screens]
-    filas = [ [c] + s.urls for c,s in zip(cabeceras, screens)]
+    filas = [[c] + s.urls for c, s in zip(cabeceras, screens)]
     imprimirTabla(filas, f)
     f.write('|========\n')
     try:
