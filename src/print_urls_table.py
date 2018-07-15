@@ -9,7 +9,7 @@ import sys
 # custom imports
 from src.get_displaylag_tellys import get_displaylag_screens
 from src.memoize_function_deco import file_memoized
-from src.buscar_solotodo import buscar_solotodo
+from src.buscar_solotodo import Buscador as BuscadorSoloTodo
 
 
 class Screen(object):

@@ -5,26 +5,35 @@ import os
 import re
 from time import sleep
 import unittest
-from src.buscar_solotodo import buscar_solotodo
+from src.buscar_solotodo import Buscador as BuscadorSoloTodo
 from src.get_displaylag_tellys import get_displaylag_screens
 from src.memoize_function_deco import file_memoized
 from src.print_urls_table import imprimirTabla
 
 
-@file_memoized()
+#@file_memoized()
 def cached_solotodo(*args, **kargs):
     return buscar_solotodo(*args, **kargs)
 
 
-@file_memoized()
+#@file_memoized()
 def cached_tellys(*args, **kargs):
     return get_displaylag_screens(*args, **kargs)
 
 
-class PruebaSolotodo(unittest.TestCase):
+class PruebaConBuscador(unittest.TestCase):
+    # http://selenium-python.readthedocs.io/getting-started.html#using-selenium-to-write-tests
+    def setUp(self):
+        self.buscador = BuscadorSoloTodo()
+
+    def tearDown(self):
+        self.buscador.cerrar_navegador()
+
+
+class PruebaSolotodo(PruebaConBuscador):
     def test_trae(self):
         "Va a buscar algo (lo que sea)"
-        resultados = cached_solotodo("usb")
+        resultados = self.buscador.buscar("usb")
         self.assertTrue(resultados)
 
 

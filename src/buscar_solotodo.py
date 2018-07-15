@@ -1,72 +1,95 @@
 # -*- coding: utf-8 -*-
 ''' Buscar en http://www.solotodo.com/
 '''
-from collections import defaultdict
-from html.parser import HTMLParser
 from math import ceil
-import urllib.request
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 import datetime
 import time
 import warnings
 
 
-class SolotodoParser(HTMLParser):
-    def __init__(self):
-        super(SolotodoParser, self).__init__()
-        self.resultados = []
+class Buscador:
+    """Abrir url de solotodo haciéndole el quite a sus mañas
 
-    def handle_starttag(self, tag, attrs):
-        _attrs = defaultdict(lambda: None)
-        for k,v in attrs:
-            _attrs[k] = v
+    Principalmente basado en {}""".format(
+            "https://medium.com"
+            "/the-andela-way/"
+            "introduction-to-web-scraping-using-selenium-7ec377a8cf72"
+            )
 
-        if tag != "a":
-            return
-        if "href" not in _attrs.keys():
-            return
-        if not _attrs["href"].startswith('/products/'):
-            return
+    def __init__(self,
+                 descanso=datetime.timedelta(seconds=60),
+                 avisarVacíos=False):
+        """Crea instancia para múltiples consultas
 
-        self.resultados.append(_attrs["href"])
-        return
-            
-    def handle_endtag(self, tag):
-        pass
+        """
+        self.descanso = descanso
+        self.avisarVacíos = avisarVacíos
+        self.__conexión_navegador = None
 
-    def handle_data(self, data):
-        pass
+    def buscar(self, consulta):
+        '''Buscar en http://www.solotodo.com/
+        '''
+        self.navegador.get("https://www.solotodo.com/search?search={}".format(consulta))
+        elementos = (
+                    self.navegador
+                    .find_elements_by_xpath(
+                        "//div[@class='price flex-grow']/a"))
+        import pudb; pu.db
+        print([e for e in elementos])
+        print(dir(elementos[0]))
+        resultados = [e.get_attribute('href') for e in elementos]
 
+        if not resultados and self.avisarVacíos:
+            warnings.warn("Sin resultados")
+        resultadosÚnicos = list(set(resultados))
+        urlsCompletas = list(map(lambda url: "http://www.solotodo.com"+url,
+                                 resultadosÚnicos))
 
-def buscar_solotodo(consulta=None, archHtml=None,
-                    descanso=datetime.timedelta(seconds=60),
-                    avisarVacíos=False):
-    '''Buscar en http://www.solotodo.com/
-    '''
-    if archHtml is None:
-        assert(consulta is not None)
-        request = urllib.request.Request(
-            "https://www.solotodo.com/search?search={}".format(consulta),
-            headers={'User-Agent': 'Mozilla/5.0'})
-        htmlStr = urllib.request.urlopen(request).read().decode(encoding='utf-8')
-    else:
-        assert(consulta is None)
-        with open(archHtml) as htmlFile:
-            htmlStr = '\n'.join(htmlFile.readlines())
+        # Al parececer, solotodo no deja buscar de corrido
+        time.sleep(ceil(self.descanso.total_seconds()))
 
-    raise RuntimeError("Aprender a ocupar selenium")
-    parser = SolotodoParser()
-    parser.feed(htmlStr)
-    if not parser.resultados and avisarVacíos:
-        nombreRegistro = "./última_consulta-{0}.html".format(
-            datetime.datetime.now().isoformat())
-        with open(nombreRegistro, "w") as registro:
-            registro.write(htmlStr)
-        warnings.warn("Sin resultados, revisa {}".format(nombreRegistro))
-    resultadosÚnicos = list(set(parser.resultados))
-    urlsCompletas = list(map(lambda url: "http://www.solotodo.com"+url,
-                             resultadosÚnicos))
+        return urlsCompletas
 
-    # Al parececer, solotodo no deja buscar de corrido
-    time.sleep(ceil(descanso.total_seconds()))
-    
-    return urlsCompletas
+    def _abrir(self, url):
+        '''Cargar url en navegador (para ser leída después)'''
+        self.navegador.get(url)
+        tiempo_max = 10000
+        try:
+            (WebDriverWait(self.navegador, tiempo_max)
+                .until(EC.visibility_of_element_located(
+                    (By.XPATH,
+                        "//div[@class='{}']".format(
+                            "d-flex flex-column category-browse-result"
+                            )))))
+
+        except TimeoutException as e:
+            self.navegador.quit()
+            raise RuntimeError("Tiempo máximo excedido") from e
+
+    def obtener_navegador(self):
+        opciones = webdriver.firefox.options.Options()
+        opciones.add_argument("--private-window")
+        return webdriver.Firefox(options=opciones)
+
+    @property
+    def navegador(self):
+        if self.__conexión_navegador is None:
+            self.__conexión_navegador = self.obtener_navegador()
+        return self.__conexión_navegador
+
+    def cerrar_navegador(self):
+        if self.__conexión_navegador is not None:
+            self.navegador.close()
+        self.__conexión_navegador = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.cerrar_navegador()
+        return self
