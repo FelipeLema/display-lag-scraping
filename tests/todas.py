@@ -28,7 +28,6 @@ class PruebaConBuscador(unittest.TestCase):
         self.buscador = BuscadorSoloTodo()
 
     def tearDown(self):
-        warnings.warn("bajando")
         self.buscador.cerrar_navegador()
 
 
@@ -36,6 +35,7 @@ class PruebaSolotodo(PruebaConBuscador):
     def test_trae(self):
         "Va a buscar algo (lo que sea)"
         resultados = self.buscador.buscar("usb")
+        warnings.warn(resultados)
         self.assertTrue(resultados)
 
 

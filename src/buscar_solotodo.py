@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 ''' Buscar en http://www.solotodo.com/
 '''
-from math import ceil
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-import datetime
-import time
 import warnings
 
 
@@ -38,17 +35,12 @@ class Buscador:
                     self.navegador
                     .find_elements_by_xpath(
                         "//div[@class='price flex-grow']/a"))
-        print([e for e in elementos])
-        print(dir(elementos[0]))
         resultados = [e.get_attribute('href') for e in elementos]
 
         if not resultados and self.avisarVacíos:
             warnings.warn("Sin resultados")
         resultadosÚnicos = list(set(resultados))
-        urlsCompletas = list(map(lambda url: "http://www.solotodo.com"+url,
-                                 resultadosÚnicos))
-
-        return urlsCompletas
+        return resultadosÚnicos
 
     def _abrir(self, url):
         '''Cargar url en navegador (para ser leída después)'''
@@ -79,8 +71,6 @@ class Buscador:
         return self.__conexión_navegador
 
     def cerrar_navegador(self):
-        warnings.warn("cerrando")
         if self.__conexión_navegador is not None:
-            warnings.warn("cerrando mucho")
             self.navegador.close()
         self.__conexión_navegador = None
