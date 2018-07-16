@@ -22,24 +22,22 @@ class Buscador:
             )
 
     def __init__(self,
-                 descanso=datetime.timedelta(seconds=60),
                  avisarVacíos=False):
         """Crea instancia para múltiples consultas
 
         """
-        self.descanso = descanso
         self.avisarVacíos = avisarVacíos
         self.__conexión_navegador = None
 
     def buscar(self, consulta):
         '''Buscar en http://www.solotodo.com/
         '''
-        self.navegador.get("https://www.solotodo.com/search?search={}".format(consulta))
+        self.navegador.get("https://www.solotodo.com/search?search={}".format(
+            consulta))
         elementos = (
                     self.navegador
                     .find_elements_by_xpath(
                         "//div[@class='price flex-grow']/a"))
-        import pudb; pu.db
         print([e for e in elementos])
         print(dir(elementos[0]))
         resultados = [e.get_attribute('href') for e in elementos]
@@ -49,9 +47,6 @@ class Buscador:
         resultadosÚnicos = list(set(resultados))
         urlsCompletas = list(map(lambda url: "http://www.solotodo.com"+url,
                                  resultadosÚnicos))
-
-        # Al parececer, solotodo no deja buscar de corrido
-        time.sleep(ceil(self.descanso.total_seconds()))
 
         return urlsCompletas
 
@@ -74,7 +69,8 @@ class Buscador:
     def obtener_navegador(self):
         opciones = webdriver.firefox.options.Options()
         opciones.add_argument("--private-window")
-        return webdriver.Firefox(options=opciones)
+        navegador = webdriver.Firefox(options=opciones)
+        return navegador
 
     @property
     def navegador(self):
@@ -83,13 +79,8 @@ class Buscador:
         return self.__conexión_navegador
 
     def cerrar_navegador(self):
+        warnings.warn("cerrando")
         if self.__conexión_navegador is not None:
+            warnings.warn("cerrando mucho")
             self.navegador.close()
         self.__conexión_navegador = None
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
-        self.cerrar_navegador()
-        return self

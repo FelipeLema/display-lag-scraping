@@ -9,6 +9,7 @@ from src.buscar_solotodo import Buscador as BuscadorSoloTodo
 from src.get_displaylag_tellys import get_displaylag_screens
 from src.memoize_function_deco import file_memoized
 from src.print_urls_table import imprimirTabla
+import warnings
 
 
 #@file_memoized()
@@ -27,6 +28,7 @@ class PruebaConBuscador(unittest.TestCase):
         self.buscador = BuscadorSoloTodo()
 
     def tearDown(self):
+        warnings.warn("bajando")
         self.buscador.cerrar_navegador()
 
 
