@@ -9,17 +9,6 @@ from src.buscar_solotodo import Buscador as BuscadorSoloTodo
 from src.get_displaylag_tellys import get_displaylag_screens
 from src.memoize_function_deco import file_memoized
 from src.print_urls_table import imprimirTabla
-import warnings
-
-
-#@file_memoized()
-def cached_solotodo(*args, **kargs):
-    return buscar_solotodo(*args, **kargs)
-
-
-#@file_memoized()
-def cached_tellys(*args, **kargs):
-    return get_displaylag_screens(*args, **kargs)
 
 
 class PruebaConBuscador(unittest.TestCase):
@@ -35,23 +24,22 @@ class PruebaSolotodo(PruebaConBuscador):
     def test_trae(self):
         "Va a buscar algo (lo que sea)"
         resultados = self.buscador.buscar("usb")
-        warnings.warn(resultados)
         self.assertTrue(resultados)
 
 
-class PruebaMonitorSolotodo(unittest.TestCase):
+class PruebaMonitorSolotodo(PruebaConBuscador):
     def test_trae(self):
         """Va a buscar algo (monitor de verdad)
 
         Es necesario que la búsqueda entregue un ítem existente"""
-        resultados = cached_solotodo("V196HQL")
+        resultados = self.buscador.buscar("Z271")
         self.assertTrue(resultados)
 
 
 class PruebaParserDisplayLag(unittest.TestCase):
     def test_formato(self):
         '''Revisa el formato de los resultados.'''
-        pantallas = cached_tellys()
+        pantallas = get_displaylag_screens()
         for pantalla in pantallas:
             for etiqueta in ['brand',
                              'size',
@@ -60,8 +48,13 @@ class PruebaParserDisplayLag(unittest.TestCase):
                              'screen_type',
                              'input_lag']:
                 self.assertIn(etiqueta, pantalla)
-            self.assertIsNotNone(re.match(r'^\d{2}ms$', pantalla['input_lag']))
-            self.assertIsNotNone(re.match(r'^[0-9.]+"$', pantalla['size']))
+            self.assertIsNotNone(re.match(r'^[0-9.]+ms$',
+                                          pantalla['input_lag']),
+                                 "No encontré input_lag en {pantalla}"
+                                 .format(pantalla=pantalla))
+            self.assertIsNotNone(re.match(r'^[0-9.]+"?$', pantalla['size']),
+                                 "No encontré 'size' en {pantalla}"
+                                 .format(pantalla=pantalla))
 
 
 class ImprimirTabla(unittest.TestCase):
@@ -108,7 +101,7 @@ class MemoCache(unittest.TestCase):
         def capitalize(s):
             sleep(Δ(seconds=2).total_seconds())
             return s.upper()
-        now = datetime.datetime.now
+        ahora = datetime.datetime.now
 
         entrada = 'bbb'
         try:
@@ -116,13 +109,20 @@ class MemoCache(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-        inicio = now()
-        δ1 = now() - inicio
-        assert δ1 > Δ(seconds=1)
+        inicio = ahora()
+        # no ocupa cache, espera 2s
+        r1 = capitalize(entrada)
+        δ1 = ahora() - inicio
+        self.assertGreater(δ1, Δ(seconds=1),
+                           "{} debió ser > 1s".format(δ1))
 
-        inicio = now()
-        δ2 = now() - inicio
+        inicio = ahora()
+        # ocupa cache, respuesta inmediata
+        r2 = capitalize(entrada)
+        δ2 = ahora() - inicio
         assert δ2 < Δ(seconds=1)
+
+        self.assertEqual(r1, r2)
 
 
 if __name__ == '__main__':
