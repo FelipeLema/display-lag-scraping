@@ -5,8 +5,9 @@ See http://forums.shoryuken.com/discussion/comment/8676004#Comment_8676004
 from html.parser import HTMLParser
 import urllib.request
 import re
-fields = ['brand',   'size',    'model',   'resolution','screen_type','input_lag']
-tags   = ['column-3','column-2','column-4','column-5',  'column-8',   'column-9']
+
+fields = ['brand',    'size',     'model',    'resolution', 'screen_type', 'input_lag']
+tags   = ['column-3', 'column-2', 'column-4', 'column-5',   'column-8',    'column-9']
 # filas de la 2 en adelante
 rowClassRE = re.compile(r'row-([2-9]|\d{2,}) (odd|even)')
 
@@ -39,7 +40,7 @@ class DisplayLagParser(HTMLParser):
         if self.inRow and tag == "td":
             _class = self._getClass(attrs)
             self.currentColumn = _class
-            
+
     def handle_endtag(self, tag):
         if tag == "tr":
             self.inRow = False
@@ -66,7 +67,7 @@ def urllib_and_html_parse_get(max_screens=30, htmlFilePath=None):
     else:
         fileName = htmlFilePath
     with open(fileName) as htmlFile:
-        listOfTvs = html_parse_get('\n'.join(htmlFile.readlines())) 
+        listOfTvs = html_parse_get('\n'.join(htmlFile.readlines()))
         global fields
         out = []
         for tv in listOfTvs:
@@ -80,7 +81,7 @@ def urllib_and_html_parse_get(max_screens=30, htmlFilePath=None):
             out.append(translatedFields)
         return out[:max_screens]
 
-  
+
 def get_displaylag_screens():
     return urllib_and_html_parse_get() + \
         get_squidoo_monitors() + \
@@ -110,7 +111,7 @@ def get_squidoo_monitors():
     '''
     cabecera = \
         ['brand', 'size', 'model', 'resolution', 'screen_type', 'input_lag']
-    l = [
+    listaMonitores = [
             'Asus 21.5 VE228H 1x1 monitor 7ms',
             'BenQ 27 GW2750HM 1X1 monitor 7ms',
             'Dell 27 S2740L 1x1 monitor 6.3ms',
@@ -130,16 +131,16 @@ def get_squidoo_monitors():
             'BenQ 24 XL2420T 1x1 monitor 4.9ms',
             'Asus 24 VG248QE 1x1 monitor 3.1ms',
             ]
-    return formatear(cabecera, l)
+    return formatear(cabecera, listaMonitores)
 
 
 # see #1
 def monitores_particulares():
     cabecera = \
         ['brand', 'size', 'model', 'resolution', 'screen_type', 'input_lag']
-    l = [
+    listaMonitores = [
         #                               ↓ No sé, en realidad
         'Samsung 24 C27F398 1x1 monitor 11ms',
         'Samsung 27 LC24F390FHLX 1x1 monitor 4ms',
     ]
-    return formatear(cabecera, l)
+    return formatear(cabecera, listaMonitores)
