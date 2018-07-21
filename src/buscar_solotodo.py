@@ -10,6 +10,52 @@ from selenium.common.exceptions import TimeoutException
 import warnings
 
 
+class imagen_cargada(object):
+    """Revisa que imágenes en un XPath esten cargadas
+
+    https://stackoverflow.com/a/42661603"""
+    def __init__(self, localizador):
+        self.localizador = localizador
+
+    def _imagen_cargada(self, navegador, elemento):
+        _js = "return arguments[0].complete"
+        return navegador.execute_script(_js, elemento)
+
+    def __call__(self, navegador):
+        elementos = navegador.find_elements(*self.localizador)
+        if not elementos:
+            # todavía no se carga el DOM de la imagen
+            return False
+        imágenes_sin_cargar = [not self._imagen_cargada(navegador, e)
+                               for e in elementos]
+        if any(imágenes_sin_cargar):
+            # alguna imagen no está cargada
+            return False
+        # todo listo
+        return elementos
+
+
+class resultados_listos(object):
+    """Revisa que resultados estén cargados
+    Revisa que se complete una de dos situaciones:
+        - No hay resultados
+        - Los resultados están cargados (si y solo si sus imágenes están
+        cargadas)"""
+
+    def __init__(self, localizador):
+        self.imágenes_cargadas = imagen_cargada(localizador)
+
+    def __call__(self, navegador):
+        div_sin_resultados = (
+                navegador
+                .find_elements_by_xpath(
+                    "//div[@class='category-browse-no-results']"))
+        if div_sin_resultados:
+            return div_sin_resultados  # avisar explícitamente
+        # a lo mejor está cargando los resultados
+        return self.imágenes_cargadas(navegador)
+
+
 class Buscador:
     """Abrir url de solotodo haciéndole el quite a sus mañas
 
@@ -30,7 +76,7 @@ class Buscador:
     def buscar(self, consulta):
         '''Buscar en http://www.solotodo.com/
         '''
-        self.navegador.get("https://www.solotodo.com/search?search={}".format(
+        self._abrir("https://www.solotodo.com/search?search={}".format(
             consulta))
         elementos = (
                     self.navegador
@@ -48,12 +94,12 @@ class Buscador:
         self.navegador.get(url)
         tiempo_max = 10000
         try:
+            # esperar hasta que estén cargadas…
             (WebDriverWait(self.navegador, tiempo_max)
-                .until(EC.visibility_of_element_located(
+                .until(resultados_listos(
                     (By.XPATH,
-                        "//div[@class='{}']".format(
-                            "d-flex flex-column category-browse-result"
-                            )))))
+                        # … las imágenes de los productos
+                        "//div[@class='image-container d-flex flex-column justify-content-center']/a/img"))))
 
         except TimeoutException as e:
             self.navegador.quit()

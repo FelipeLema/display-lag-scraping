@@ -21,19 +21,21 @@ class PruebaConBuscador(unittest.TestCase):
 
 
 class PruebaSolotodo(PruebaConBuscador):
-    def test_trae(self):
+    def test_trae_cualquier_cosa(self):
         "Va a buscar algo (lo que sea)"
         resultados = self.buscador.buscar("usb")
         self.assertTrue(resultados)
 
-
-class PruebaMonitorSolotodo(PruebaConBuscador):
-    def test_trae(self):
+    def test_trae_uno(self):
         """Va a buscar algo (monitor de verdad)
 
         Es necesario que la búsqueda entregue un ítem existente"""
-        resultados = self.buscador.buscar("Z271")
+        resultados = self.buscador.buscar("G2460PF")
         self.assertTrue(resultados)
+
+    def test_sin_resultados(self):
+        resultados = self.buscador.buscar("potopichicaca")
+        self.assertFalse(resultados)
 
 
 class PruebaParserDisplayLag(unittest.TestCase):
