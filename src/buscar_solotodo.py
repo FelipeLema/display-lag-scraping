@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ''' Buscar en http://www.solotodo.com/
 '''
+import contextlib
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -74,3 +75,10 @@ class Buscador:
         if self.__conexión_navegador is not None:
             self.navegador.close()
         self.__conexión_navegador = None
+
+
+@contextlib.contextmanager
+def buscador():
+    _buscador = Buscador()
+    yield _buscador
+    _buscador.cerrar_navegador()
