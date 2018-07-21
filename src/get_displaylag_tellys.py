@@ -6,7 +6,7 @@ from html.parser import HTMLParser
 import urllib.request
 import re
 
-fields = ['brand',    'size',     'model',    'resolution', 'screen_type', 'input_lag']
+fields = ['brand',    'size',     'modelo',    'resolution', 'screen_type', 'input_lag']
 tags   = ['column-3', 'column-2', 'column-4', 'column-5',   'column-8',    'column-9']
 # filas de la 2 en adelante
 rowClassRE = re.compile(r'row-([2-9]|\d{2,}) (odd|even)')
@@ -110,7 +110,7 @@ def get_squidoo_monitors():
     No use in making it re-runnable
     '''
     cabecera = \
-        ['brand', 'size', 'model', 'resolution', 'screen_type', 'input_lag']
+        ['brand', 'size', 'modelo', 'resolution', 'screen_type', 'input_lag']
     listaMonitores = [
             'Asus 21.5 VE228H 1x1 monitor 7ms',
             'BenQ 27 GW2750HM 1X1 monitor 7ms',
@@ -137,7 +137,7 @@ def get_squidoo_monitors():
 # see #1
 def monitores_particulares():
     cabecera = \
-        ['brand', 'size', 'model', 'resolution', 'screen_type', 'input_lag']
+        ['brand', 'size', 'modelo', 'resolution', 'screen_type', 'input_lag']
     listaMonitores = [
         #                               ↓ No sé, en realidad
         'Samsung 24 C27F398 1x1 monitor 11ms',

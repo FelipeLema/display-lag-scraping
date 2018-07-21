@@ -43,7 +43,7 @@ class PruebaParserDisplayLag(unittest.TestCase):
         for pantalla in pantallas:
             for etiqueta in ['brand',
                              'size',
-                             'model',
+                             'modelo',
                              'resolution',
                              'screen_type',
                              'input_lag']:

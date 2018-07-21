@@ -7,13 +7,15 @@ from io import StringIO
 import sys
 
 # custom imports
+# https://stackoverflow.com/a/39091745
 from src.get_displaylag_tellys import get_displaylag_screens
 from src.memoize_function_deco import file_memoized
-from src.buscar_solotodo import Buscador as BuscadorSoloTodo
+from src.buscar_solotodo import buscador as buscadorSoloTodo
 
 
 class Screen(object):
-    def __init__(self, brand, size, model, resolution, screen_type, input_lag):
+    def __init__(self, brand, size, modelo,
+                 resolution, screen_type, input_lag):
         delay = input_lag
         del input_lag
         g = re.search(r'[0-9]+', delay)
@@ -22,7 +24,7 @@ class Screen(object):
         size = size.strip('\'"')
         self.brand = brand
         self.size = float(size)
-        self.model = model
+        self.modelo = modelo
         self.res = resolution
         self.type = screen_type
         self.delay = float(delay)
@@ -38,23 +40,11 @@ def imprimirTabla(listaDeUrls, f):
         f.write('|{0}\n'.format(filaFormateada))
 
 
-def fill_screen_urls(screen, engine='solotodo'):
-    model = screen.model
-    try:
-        f = {'solotodo': buscar_solotodo,
-             }[engine]
-    except KeyError:
-        raise NotImplementedError('no conozco el motor "{0}"'.format(engine))
-    r = f(model)
-    for s in r:
-        assert isinstance(s, str)
-    screen.urls = r
-    return r
-
-
 @file_memoized()
-def m_busca_datos_pantallas(pantalla):
-    fill_screen_urls(pantalla)
+def m_busca_datos_pantallas(buscador, pantalla):
+    modelo = pantalla.modelo
+    r = buscador.buscar(modelo)
+    pantalla.urls = r
 
 
 @file_memoized()
@@ -77,23 +67,24 @@ if __name__ == '__main__':
     model_set = set()
     to_del = []
     for s in screens:
-        if s.model not in model_set:
-            model_set.add(s.model)
+        if s.modelo not in model_set:
+            model_set.add(s.modelo)
         else:
             to_del.append(s)
     for td in to_del:
         screens.remove(td)
-    # obtener urls para cada modelo
-    for i_s, s in enumerate(screens):
-        sys.stderr.write('Buscando {0} ({1}/{2})…'.format(
-                s.model,
-                i_s+1,
-                len(screens)))
-        sys.stderr.flush()
-        m_busca_datos_pantallas(s)
-        sys.stderr.write(' obtuve {0} resultados\n'.format(
-            len(s.urls)))
-        sys.stdout.flush()
+    with buscadorSoloTodo() as buscador:
+        # obtener urls para cada modelo
+        for i_s, s in enumerate(screens):
+            sys.stderr.write('Buscando {0} ({1}/{2})…'.format(
+                    s.modelo,
+                    i_s+1,
+                    len(screens)))
+            sys.stderr.flush()
+            m_busca_datos_pantallas(buscador, s)
+            sys.stderr.write(' obtuve {0} resultados\n'.format(
+                len(s.urls)))
+            sys.stdout.flush()
     # rellenar
     max_l = -1
     for s in screens:
@@ -104,7 +95,7 @@ if __name__ == '__main__':
     # imprimir urls
     f.write('|========\n')
     cabeceras = ['{0} {1} ({2}\',{3}ms)'.format(
-        s.brand, s.model, s.size, s.delay)
+        s.brand, s.modelo, s.size, s.delay)
                  for s in screens]
     filas = [[c] + s.urls for c, s in zip(cabeceras, screens)]
     imprimirTabla(filas, f)
