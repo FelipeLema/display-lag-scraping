@@ -74,9 +74,9 @@ class ImprimirTabla(unittest.TestCase):
         ]
         f = StringIO()
         imprimirTabla(urls, f)
-        self.assertEqual(f.getvalue(), '''|a|b|c|
-|1|2||
-|α|β|γ|δ
+        self.assertEqual(f.getvalue(), '''|a | b | c |
+|1 | 2 |  |
+|α | β | γ | δ
 ''')
 
 

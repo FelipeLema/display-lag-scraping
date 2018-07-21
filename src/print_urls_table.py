@@ -36,7 +36,7 @@ def imprimirTabla(listaDeUrls, f):
     # https://stackoverflow.com/a/6473724/3637404
     transpuesta = map(list, zip(*comoTabla))
     for fila in transpuesta:
-        filaFormateada = '|'.join(list(fila))
+        filaFormateada = ' | '.join(list(fila)).strip()
         f.write('|{0}\n'.format(filaFormateada))
 
 
