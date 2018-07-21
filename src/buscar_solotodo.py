@@ -77,13 +77,15 @@ class Buscador:
 
         si busco "holi-chai", busca por "holi" y "chai" separadamente.
         Asumiendo que los monitores tienen un nombre importante antes del
-        ⎡-⎦, saco las urls que _no_ tengan este nombre importante'''
+        ⎡-⎦, saco las urls que _no_ tengan este nombre importante.
+
+        Ojo: es insnsible a las mayúsculas'''
         if '-' not in consulta:
             # nada que filtrar
             return resultados
         nombre_clave = consulta.split('-')[0]
         correctos = [url for url in resultados
-                     if nombre_clave in url]
+                     if nombre_clave.lower() in url.lower()]
         return correctos
 
     def buscar(self, consulta):

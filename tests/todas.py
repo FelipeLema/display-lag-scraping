@@ -42,6 +42,18 @@ class PruebaSolotodo(PruebaConBuscador):
         resultados = self.buscador.buscar("IPS277L-BN")
         self.assertFalse(resultados)
 
+    def test_no_sacar_lo_que_no_es_basura(self):
+        '''No filtrar de más
+
+        Sé que (probablemente) ⎡25UM58-P⎦ no es lo mismo que ⎡25UM58⎦,
+        pero la idea es revisar el filtrado automático.
+
+        De ahí el humano al otro lado de la tantalla decidirá si
+        el filtrado pasó algo incorrecto.
+        '''
+        resultados = self.buscador.buscar("25UM58-P")
+        self.assertTrue(resultados)
+
 
 class PruebaParserDisplayLag(unittest.TestCase):
     def test_formato(self):
