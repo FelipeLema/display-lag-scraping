@@ -85,19 +85,23 @@ if __name__ == '__main__':
             sys.stderr.write(' obtuve {0} resultados\n'.format(
                 len(s.urls)))
             sys.stdout.flush()
+    # filtrar los monitores sin resultados
+    pantallas = [s for s in screens
+                 if s.urls]
+    del screens
     # rellenar
     max_l = -1
-    for s in screens:
+    for s in pantallas:
         max_l = max(max_l, len(s.urls))
-    for s in screens:
+    for s in pantallas:
         s.urls += list(it.repeat('', max_l-len(s.urls)))
 
     # imprimir urls
     f.write('|========\n')
     cabeceras = ['{0} {1} ({2}\',{3}ms)'.format(
         s.brand, s.modelo, s.size, s.delay)
-                 for s in screens]
-    filas = [[c] + s.urls for c, s in zip(cabeceras, screens)]
+                 for s in pantallas]
+    filas = [[c] + s.urls for c, s in zip(cabeceras, pantallas)]
     imprimirTabla(filas, f)
     f.write('|========\n')
     try:
