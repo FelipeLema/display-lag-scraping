@@ -1,7 +1,5 @@
-Short description / Descripción corta
+Descripción corta
 =====================================
-
-Scraping of displaylag.com and search on specific domains for availability of lagless monitors in certain country.
 
 Escaneo de contenido de displaylag.com para búsqueda posterior en dominios específicos para encontrar disponibilidad de monitores sin lag en un país
 
@@ -12,18 +10,56 @@ python -m src.print_urls_table > my_html_table.adoc
 Monitores disponibles en Chile
 ------------------------------
 
-
 Actualmente, el código lo mantengo para que busque la selección de monitores en solotodo (Chile):
 
 |========
-|ASUS MX279H (27.0',9.0ms)|http://www.solotodo.com/products/13655-asus-mx279h/
-|LG 25UM58-P (25.0',9.0ms)|http://www.solotodo.com/products/24319-lg-25um58/
-|LG 24MP48HQ-P (24.0',9.0ms)|http://www.solotodo.com/products/35167-lg-24mp48hq/
-|ASUS VE278H (27.0',10.0ms)|http://www.solotodo.com/products/15182-asus-ve278h/
-|ASUS VP228H (22.0',10.0ms)|http://www.solotodo.com/products/26883-asus-vp228h/
-|ViewSonic VX2457 (24.0',10.0ms)|http://www.solotodo.com/products/25669-viewsonic-vx2457-mhd/
-|ViewSonic XG2401 (24.0',10.0ms)|http://www.solotodo.com/products/25666-viewsonic-xg2401/
-|LG VG278H (27.0',6.0ms)|http://www.solotodo.com/products/25849-asus-vg278hv/
-|Asus VG248QE (24.0',3.0ms)|http://www.solotodo.com/products/13660-asus-vg248qe/
-|Samsung LC24F390FHLX (27.0',11.0ms)|http://www.solotodo.com/products/25606-samsung-lc24f390fhlxzs/
+|ASUS VP239H (23.0',9.0ms)||||||||||||
+|Acer R271 (27.0',9.0ms)||||||||||||
+|Lenovo L27Q (27.0',9.0ms)||||||||||||
+|ASUS MX279H (27.0',9.0ms)||||||||||||
+|LG IPS237L (23.0',9.0ms)||||||||||||
+|LG 25UM58-P (25.0',9.0ms)|https://www.solotodo.com/products/24319-lg-25um58|https://www.solotodo.com/products/34322-lenovo-ideapad-110-14ibr-80t60060cl|https://www.solotodo.com/products/29471-lenovo-ideapad-110-14ibr-80t60062cl|https://www.solotodo.com/products/41001-lenovo-ideapad-110-14ibr-80t6007acl|https://www.solotodo.com/products/41259-lenovo-ideapad-320-15-80xs0001cl|https://www.solotodo.com/products/40188-lenovo-ideapad-320-80xh01crcl|https://www.solotodo.com/products/38583-lenovo-ideapad-320-80xl00aucl|https://www.solotodo.com/products/38738-lenovo-ideapad-320-80yn000fcl|https://www.solotodo.com/products/40011-lenovo-ideapad-320-14-80xk0011cl|https://www.solotodo.com/products/34331-lenovo-ideapad-510-80sv00awcl|https://www.solotodo.com/products/38740-lenovo-ideapad-720s-80xc000mcl|https://www.solotodo.com/products/39931-lenovo-ideapad-720s-80xc003gcl
+|LG 24MP48HQ-P (24.0',9.0ms)|https://www.solotodo.com/products/34322-lenovo-ideapad-110-14ibr-80t60060cl|https://www.solotodo.com/products/29471-lenovo-ideapad-110-14ibr-80t60062cl|https://www.solotodo.com/products/41001-lenovo-ideapad-110-14ibr-80t6007acl|https://www.solotodo.com/products/41259-lenovo-ideapad-320-15-80xs0001cl|https://www.solotodo.com/products/40188-lenovo-ideapad-320-80xh01crcl|https://www.solotodo.com/products/38583-lenovo-ideapad-320-80xl00aucl|https://www.solotodo.com/products/38738-lenovo-ideapad-320-80yn000fcl|https://www.solotodo.com/products/40011-lenovo-ideapad-320-14-80xk0011cl|https://www.solotodo.com/products/34331-lenovo-ideapad-510-80sv00awcl|https://www.solotodo.com/products/38740-lenovo-ideapad-720s-80xc000mcl|https://www.solotodo.com/products/39931-lenovo-ideapad-720s-80xc003gcl|https://www.solotodo.com/products/34838-lenovo-ideapad-710s-13ikb-plus-80w30037cl
+|ASUS PB298Q (29.0',9.0ms)||||||||||||
+|LG 27EA33V (27.0',9.0ms)||||||||||||
+|ViewSonic VP2468 (24.0',9.0ms)|https://www.solotodo.com/products/43143-viewsonic-vp2468|||||||||||
+|LG 34UM68-P (34.0',9.0ms)|https://www.solotodo.com/products/34322-lenovo-ideapad-110-14ibr-80t60060cl|https://www.solotodo.com/products/29471-lenovo-ideapad-110-14ibr-80t60062cl|https://www.solotodo.com/products/41001-lenovo-ideapad-110-14ibr-80t6007acl|https://www.solotodo.com/products/41259-lenovo-ideapad-320-15-80xs0001cl|https://www.solotodo.com/products/40188-lenovo-ideapad-320-80xh01crcl|https://www.solotodo.com/products/38583-lenovo-ideapad-320-80xl00aucl|https://www.solotodo.com/products/38738-lenovo-ideapad-320-80yn000fcl|https://www.solotodo.com/products/40011-lenovo-ideapad-320-14-80xk0011cl|https://www.solotodo.com/products/34331-lenovo-ideapad-510-80sv00awcl|https://www.solotodo.com/products/38740-lenovo-ideapad-720s-80xc000mcl|https://www.solotodo.com/products/39931-lenovo-ideapad-720s-80xc003gcl|https://www.solotodo.com/products/34838-lenovo-ideapad-710s-13ikb-plus-80w30037cl
+|Samsung C23A750X (23.0',10.0ms)||||||||||||
+|ASUS VE278H (27.0',10.0ms)||||||||||||
+|Samsung S24B350HL (24.0',10.0ms)||||||||||||
+|ASUS VH236H (23.0',10.0ms)||||||||||||
+|ASUS VX248H (24.0',10.0ms)||||||||||||
+|Acer S211HL (21.5',10.0ms)||||||||||||
+|ASUS VP228H (22.0',10.0ms)|https://www.solotodo.com/products/26883-asus-vp228h|||||||||||
+|ASUS VG245H (24.0',10.0ms)|https://www.solotodo.com/products/39664-asus-vg245h-90lm02v0-b013b0|||||||||||
+|ViewSonic XG2401 (24.0',10.0ms)|https://www.solotodo.com/products/25666-viewsonic-xg2401|||||||||||
+|ASUS MG248Q (24.0',10.0ms)|https://www.solotodo.com/products/40059-asus-mg248qr-90lm02d3-b013b0|||||||||||
+|ViewSonic XG2700-4K (27.0',10.0ms)|https://www.solotodo.com/products/26091-panasonic-lumix-dmc-fz300|https://www.solotodo.com/products/47623-sony-cyber-shot-dsc-rx100m6-uc2|https://www.solotodo.com/products/21788-sony-cyber-shot-dsc-rx10m2|https://www.solotodo.com/products/38018-sony-xperia-xz-premium-chrome|https://www.solotodo.com/products/42532-sony-xperia-xz-premium-deepsea-black-playstation-4|https://www.solotodo.com/products/45480-sony-xperia-xz-premium-dual-bronze-pink|https://www.solotodo.com/products/46441-apple-imac-retina-4k-215-mndy2cia|https://www.solotodo.com/products/48048-lg-oled55b7p-led-50-uhd-4k-50uk6300psb|https://www.solotodo.com/products/36063-panasonic-lumix-dc-fz80pp-k|https://www.solotodo.com/products/29797-viewsonic-vg2860mhl-4k|https://www.solotodo.com/products/41157-asus-zenfone-4-max-plus-zc554kl-dorado|https://www.solotodo.com/products/44308-crucial-ballistix-tactical-tracer-blt8g4d26bft4k-1-x-8gb-dimm-ddr4-2666
+|ViewSonic VX2776 (27.0',10.0ms)||||||||||||
+|Samsung S24B750V (24.0',10.0ms)||||||||||||
+|ViewSonic VX2257 (22.0',10.0ms)|https://www.solotodo.com/products/25748-viewsonic-vx2257-mhd|||||||||||
+|BenQ RL2455 (24.0',10.0ms)|https://www.solotodo.com/products/20149-benq-rl2455hm|||||||||||
+|BenQ XL2420G (24.0',10.0ms)||||||||||||
+|BenQ GL2460HM (24.0',10.0ms)||||||||||||
+|BenQ XL2411 (24.0',10.0ms)|https://www.solotodo.com/products/39387-benq-xl2411|||||||||||
+|DELL S2817Qr (28.0',10.0ms)||||||||||||
+|Asus VE228H (21.5',7.0ms)||||||||||||
+|BenQ GW2750HM (27.0',7.0ms)||||||||||||
+|Dell S2740L (27.0',6.0ms)||||||||||||
+|LG IPS277L-BN (27.0',6.0ms)|https://www.solotodo.com/products/42050-oster-osbnf2700v|https://www.solotodo.com/products/20006-lexar-jumpdrive-s70-16-gb-ljds70-16gasbna|https://www.solotodo.com/products/43107-micron-1100-512-gb-mtfddak512tbn-1ar12abyy|https://www.solotodo.com/products/45925-ozone-strike-battle-black-strikebattlespbn|https://www.solotodo.com/products/42049-oster-osbnf21300vd|https://www.solotodo.com/products/42997-micron-1100-1-tb-mtfddak1t0tbn-1ar12abyy|https://www.solotodo.com/products/24262-midea-mhe-26nbnm|https://www.solotodo.com/products/18979-lexar-jumpdrive-s50-16-gb-ljds50-16gasbna|https://www.solotodo.com/products/43105-micron-1100-256-gb-mtfddak256tbn-1ar12abyy|https://www.solotodo.com/products/27314-general-electric-pkcn3ffffbn|https://www.solotodo.com/products/42629-oster-osbnf21000v|https://www.solotodo.com/products/45930-riotoro-ghost-writer-prism-kr700-xpbn
+|BenQ GW2450 (24.0',4.0ms)||||||||||||
+|AOC e2352PHZ (23.0',5.0ms)||||||||||||
+|Viewsonic VX2453MH (24.0',4.0ms)||||||||||||
+|Foris FS2333-BK (23.0',4.0ms)|https://www.solotodo.com/products/41276-jam-xterior-plus-hx-p570bk|https://www.solotodo.com/products/28986-klip-klever-mouse-kmw-340bk|https://www.solotodo.com/products/30702-adata-hv620-2-tb-ahv620-2tu3-cbk|https://www.solotodo.com/products/41724-western-digital-elements-1-tb-wdbuzg0010bbk-wesn|https://www.solotodo.com/products/30715-western-digital-my-book-new-8-tb-wdbbgb0080hbk-nesn|https://www.solotodo.com/products/41721-western-digital-elements-2-tb-wdbu6y0020bbk-wesn|https://www.solotodo.com/products/39817-western-digital-my-passport-for-mac-3-tb-wdbp6a0030bbk-wesn|https://www.solotodo.com/products/44277-tt-esports-level-10-m-advanced-rgb-mo-lma-wdlobk-04|https://www.solotodo.com/products/45744-western-digital-my-passport-2-tb-wdbs4b0020bbk-wesn|https://www.solotodo.com/products/46060-tecmaster-tm-bkc001-bk|https://www.solotodo.com/products/29759-sunshine-s605bk|https://www.solotodo.com/products/46562-adata-hd330-2-tb-ahd330-2tu31-cbk
+|Viewsonic VX2370SMH (23.0',4.0ms)||||||||||||
+|BenQ RL2450HT (24.0',4.0ms)||||||||||||
+|Dell S2330MX (23.0',3.0ms)||||||||||||
+|Viewsonic VX2770SMH (27.0',3.0ms)||||||||||||
+|Acer S27HLbmii (27.0',3.0ms)||||||||||||
+|LG VG278HE (27.0',7.0ms)||||||||||||
+|LG VG278H (27.0',6.0ms)||||||||||||
+|BenQ XL2420T (24.0',4.0ms)||||||||||||
+|Asus VG248QE (24.0',3.0ms)|https://www.solotodo.com/products/13660-asus-vg248qe|||||||||||
+|Samsung C27F398 (24.0',11.0ms)||||||||||||
+|Samsung LC24F390FHLX (27.0',4.0ms)|https://www.solotodo.com/products/25606-samsung-lc24f390fhlxzs|||||||||||
 |========
