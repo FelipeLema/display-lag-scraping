@@ -5,7 +5,6 @@ import contextlib
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import warnings
 
@@ -73,6 +72,20 @@ class Buscador:
         self.avisarVacíos = avisarVacíos
         self.__conexión_navegador = None
 
+    def filtrar_basura(self, consulta, resultados):
+        '''solotodo separa automáticamente las palabras separadas por ⎡-⎦
+
+        si busco "holi-chai", busca por "holi" y "chai" separadamente.
+        Asumiendo que los monitores tienen un nombre importante antes del
+        ⎡-⎦, saco las urls que _no_ tengan este nombre importante'''
+        if '-' not in consulta:
+            # nada que filtrar
+            return resultados
+        nombre_clave = consulta.split('-')[0]
+        correctos = [url for url in resultados
+                     if nombre_clave in url]
+        return correctos
+
     def buscar(self, consulta):
         '''Buscar en http://www.solotodo.com/
         '''
@@ -87,7 +100,7 @@ class Buscador:
         if not resultados and self.avisarVacíos:
             warnings.warn("Sin resultados")
         resultadosÚnicos = list(set(resultados))
-        return resultadosÚnicos
+        return self.filtrar_basura(consulta, resultadosÚnicos)
 
     def _abrir(self, url):
         '''Cargar url en navegador (para ser leída después)'''

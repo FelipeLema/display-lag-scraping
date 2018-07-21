@@ -37,6 +37,11 @@ class PruebaSolotodo(PruebaConBuscador):
         resultados = self.buscador.buscar("potopichicaca")
         self.assertFalse(resultados)
 
+    def test_sin_basura(self):
+        '''Busca un monitor que _sé_ que no está y filtra la basura'''
+        resultados = self.buscador.buscar("IPS277L-BN")
+        self.assertFalse(resultados)
+
 
 class PruebaParserDisplayLag(unittest.TestCase):
     def test_formato(self):
