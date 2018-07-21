@@ -6,7 +6,7 @@ Scraping of displaylag.com and search on specific domains for availability of la
 Escaneo de contenido de displaylag.com para búsqueda posterior en dominios específicos para encontrar disponibilidad de monitores sin lag en un país
 
 ----
-python print_urls_table.py > my_html_table.adoc
+python -m src.print_urls_table > my_html_table.adoc
 ----
 
 Monitores disponibles en Chile
