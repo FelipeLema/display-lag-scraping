@@ -6,7 +6,7 @@ import re
 from time import sleep
 import unittest
 from src.buscar_solotodo import Buscador as BuscadorSoloTodo
-from src.get_displaylag_tellys import get_displaylag_screens
+from src.get_displaylag_tellys import get_displaylag_screens, get_squidoo_monitors
 from src.memoize_function_deco import file_memoized
 from src.print_urls_table import imprimirTabla
 
@@ -74,6 +74,14 @@ class PruebaParserDisplayLag(unittest.TestCase):
             self.assertIsNotNone(re.match(r'^[0-9.]+"?$', pantalla['size']),
                                  "No encontré 'size' en {pantalla}"
                                  .format(pantalla=pantalla))
+
+    def test_formato_squidoo(self):
+        '''Pantallas específicas'''
+        for pantalla in get_squidoo_monitors():
+            self.assertIsNotNone(re.match(r'^[0-9.]+ms$',
+                                          pantalla['input_lag']),
+                                          "Sin input_lag en {modelo}"
+                                          .format(modelo=pantalla["modelo"]))
 
 
 class ImprimirTabla(unittest.TestCase):
