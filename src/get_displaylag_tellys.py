@@ -7,7 +7,7 @@ import urllib.request
 import re
 
 fields = ['brand',    'size',     'modelo',    'resolution', 'screen_type', 'input_lag']
-tags   = ['column-3', 'column-2', 'column-4', 'column-5',   'column-8',    'column-9']
+tags   = ['column-3', 'column-2', 'column-4', 'column-5',   'column-8',    'column-10']
 # filas de la 2 en adelante
 rowClassRE = re.compile(r'row-([2-9]|\d{2,}) (odd|even)')
 
