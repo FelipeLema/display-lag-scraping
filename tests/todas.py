@@ -30,7 +30,7 @@ class PruebaSolotodo(PruebaConBuscador):
         """Va a buscar algo (monitor de verdad)
 
         Es necesario que la búsqueda entregue un ítem existente"""
-        resultados = self.buscador.buscar("G2460PF")
+        resultados = self.buscador.buscar("VE228H")
         self.assertTrue(resultados)
 
     def test_sin_resultados(self):
