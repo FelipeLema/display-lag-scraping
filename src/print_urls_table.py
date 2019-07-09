@@ -59,7 +59,7 @@ if __name__ == '__main__':
     screens_kargs = memo_get_displaylag_screens()
     all_screens = [Screen(**karg) for karg in screens_kargs]
     selected_scrns = list(filter(
-            lambda x: x.delay <= 30.0,
+            lambda x: x.delay <= 40.0,
             all_screens))
     screens = selected_scrns
 
