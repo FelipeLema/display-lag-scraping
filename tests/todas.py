@@ -19,7 +19,6 @@ class PruebaConBuscador(unittest.TestCase):
     def tearDown(self):
         self.buscador.cerrar_navegador()
 
-
 class PruebaSolotodo(PruebaConBuscador):
     def test_trae_cualquier_cosa(self):
         "Va a buscar algo (lo que sea)"
@@ -30,7 +29,7 @@ class PruebaSolotodo(PruebaConBuscador):
         """Va a buscar algo (monitor de verdad)
 
         Es necesario que la búsqueda entregue un ítem existente"""
-        resultados = self.buscador.buscar("VE228H")
+        resultados = self.buscador.buscar("VE278H")
         self.assertTrue(resultados)
 
     def test_sin_resultados(self):
