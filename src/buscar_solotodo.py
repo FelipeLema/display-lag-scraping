@@ -122,6 +122,7 @@ class Buscador:
 
     def obtener_navegador(self):
         opciones = webdriver.firefox.options.Options()
+        opciones.headless = True
         opciones.add_argument("--private-window")
         navegador = webdriver.Firefox(options=opciones)
         return navegador
