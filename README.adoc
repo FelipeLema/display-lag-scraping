@@ -14,13 +14,15 @@ Actualmente, el código lo mantengo para que busque la selección de monitores e
 .Monitores
 |========
 |LG 25UM58-P (25.0',9.0ms) | https://www.solotodo.com/products/24319-lg-25um58
+|ViewSonic VP2468 (24.0',9.0ms) | https://www.solotodo.com/products/43143-viewsonic-vp2468
 |ASUS VE278H (27.0',10.0ms) | https://www.solotodo.com/products/15182-asus-ve278h
 |ASUS VP228H (22.0',10.0ms) | https://www.solotodo.com/products/54003-asus-vp228he-90lm01k0-b05170
 |BenQ RL2455 (24.0',10.0ms) | https://www.solotodo.com/products/20149-benq-rl2455hm
+|ViewSonic VX2257 (22.0',10.0ms) | https://www.solotodo.com/products/25748-viewsonic-vx2257-mhd
 |ViewSonic VX2776 (27.0',10.0ms) | https://www.solotodo.com/products/29698-viewsonic-vx2776-smhd
 |ViewSonic XG2401 (24.0',10.0ms) | https://www.solotodo.com/products/25666-viewsonic-xg2401
 |ViewSonic VX2457 (24.0',10.0ms) | https://www.solotodo.com/products/25669-viewsonic-vx2457-mhd
-|Asus VE228H (21.5',7.0ms) | https://www.solotodo.com/products/49570-asus-ve228h
 |BenQ XL2420T (24.0',4.0ms) | https://www.solotodo.com/products/13657-benq-xl2420t
 |Asus VG248QE (24.0',3.0ms) | https://www.solotodo.com/products/13660-asus-vg248qe
+|Samsung LC24F390FHLX (27.0',4.0ms) | https://www.solotodo.com/products/25606-samsung-c24f390-lc24f390fhlxzs
 |========
